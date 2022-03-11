@@ -1,6 +1,6 @@
 // METAMASK CONNECTION
 const TIMEOUT = 1000;
-const COLLECTION_NAME = 'CodeCats';
+const COLLECTION_NAME = 'SpaceRiders';
 let editions = [];
 let dots = 1;
 
@@ -50,12 +50,12 @@ const checkOwner = async (account) => {
   if(account) {
     let isOwner = false;
     let page = 1
-    
+
     const data = await fetchWithRetry(`/.netlify/functions/isowner/?wallet=${account}&page=${page}`);
 
     isOwner = !isOwner ? data.isOwner : isOwner;
     updateStatusText(isOwner, true)
-    
+
     editions = [...data.editions]
     let nextPage = data.next_page
 
@@ -65,7 +65,7 @@ const checkOwner = async (account) => {
 
       isOwner = !isOwner ? data.isOwner : isOwner;
       updateStatusText(isOwner, true)
-      
+
       editions = [...editions, ...data.editions]
       nextPage = data.next_page
     }
@@ -113,20 +113,20 @@ async function fetchWithRetry(url)  {
 
         if(status === 200) {
           return resolve(res.json());
-        }            
+        }
         else {
           console.error(`ERROR STATUS: ${status}`)
           console.log('Retrying')
           await timer(TIMEOUT)
           fetch_retry(_url)
-        }            
+        }
       })
-      .catch(async (error) => {  
-        console.error(`CATCH ERROR: ${error}`)  
-        console.log('Retrying')    
-        await timer(TIMEOUT)    
+      .catch(async (error) => {
+        console.error(`CATCH ERROR: ${error}`)
+        console.log('Retrying')
+        await timer(TIMEOUT)
         fetch_retry(_url)
-      }); 
+      });
     }
     return fetch_retry(url);
   });
